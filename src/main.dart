@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'classes.dart';
+import 'futures.dart';
 import 'robo_fabric.dart';
 
 void main() {
@@ -72,6 +73,10 @@ void main() {
   Future<int> rp = mt.check();
   rp.then((result) => print(result));
   print('wait');
+
+  say();
+
+  printFileText();
 }
 
 void func1({required String name, required int age}) {
