@@ -1,88 +1,86 @@
-class User {
-  String? name;
-  User(String userName) {
-    name = userName;
+import 'exeptions.dart';
+
+enum Parameter {
+  health,
+  mana,
+  power,
+  armor,
+}
+
+class CharacterParameter {
+  Parameter _name;
+  int _value;
+  int _limitMax;
+  int _limitMin;
+
+  CharacterParameter(this._name, this._value, this._limitMin, this._limitMax);
+
+  String get name => _name.name;
+
+  int get value => _value;
+
+  int get limitMax => _limitMax;
+
+  int get limitMin => _limitMin;
+
+  void setName(Parameter newName) {
+    _name = newName;
   }
 
-  @override
-  String toString() {
-    assert(name != null);
-    return name!;
-  }
-}
-
-User getUser(String name) {
-  return User(name);
-}
-
-class Item {
-  String? name;
-}
-
-/// name { String } - person name
-class Person<T> {
-  String name = '';
-  Person(T option) {
-    if (option is String) {
-      name = option;
-    } else if (option is int) {
-      name = option.toString();
+  void setLimitMax(int newLimit) {
+    if (_limitMin < newLimit) {
+      _limitMax = newLimit;
     } else {
-      name = 'wrong name';
+      throw ParameterLimitException();
     }
   }
 
-  String check() {
-    return '';
-  }
-}
-
-class Teacher {
-  String name;
-  String subject;
-
-  Teacher(this.name, this.subject);
-  Teacher.custom(this.name, this.subject);
-}
-
-class MaxTeacher extends Teacher with Parents, Friend {
-  int count = 0;
-
-  MaxTeacher(int count, String name, String subject) : super(name, subject);
-
-}
-
-class Citizen extends Person {
-  String name;
-  int age;
-  static const int ageBorder = 65;
-
-  Citizen(this.name, this.age) : super(null);
-
-  @override
-  String check() {
-    int result = Citizen.ageBorder - age;
-    if (result.isNegative) {
-      return 'На пенсии уже ${result.abs()} лет';
+  void setLimitMin(int newLimit) {
+    if (_limitMax > newLimit) {
+      _limitMin = newLimit;
     } else {
-      return 'До пенсии: ${result.abs()} лет';
+      throw ParameterLimitException();
+    }
+  }
+
+  setValue(int value) {
+    if (value <= _limitMax && value >= _limitMin) {
+      _value = value;
+    } else {
+      throw ParameterValueException();
     }
   }
 }
 
-mixin Friend {
-  int status = 0;
-  playTogether() {
-    print('friends playing');
-  }
-}
+class Character {
+  String name = 'no name';
+  int _health = 100;
+  int _mana = 100;
+  int _power = 15;
+  int _armor = 10;
 
-mixin Parents {
-  playTogether() {
-    print('parents playing');
+  Character(this.name);
+
+  int get health {
+    return _health;
   }
 
-  check() {
-    return Future.delayed(Duration(seconds: 3),() => 32);
+  int get mana {
+    return _mana;
   }
+
+  int get power {
+    return _power;
+  }
+
+  int get armor {
+    return _armor;
+  }
+
+  punch(Character enemy) {
+    int damage = power - enemy.armor;
+  }
+
+  healthUpOn(int health)
+
 }

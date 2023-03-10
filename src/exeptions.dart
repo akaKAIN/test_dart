@@ -1,5 +1,11 @@
-class CustomException implements Exception {
+class ParameterValueException implements Exception {
   String errorMessage() {
-    return 'Its custom exception';
+    return 'value of parameter without limits';
+  }
+}
+
+class ParameterLimitException implements Exception {
+  String errorMessage() {
+    return 'invalid limit';
   }
 }
