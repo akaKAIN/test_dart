@@ -1,4 +1,14 @@
-import 'exeptions.dart';
+class ParameterValueException implements Exception {
+  String errorMessage() {
+    return 'value of parameter without limits';
+  }
+}
+
+class ParameterLimitException implements Exception {
+  String errorMessage() {
+    return 'invalid limit';
+  }
+}
 
 enum Parameter {
   health,
@@ -8,26 +18,37 @@ enum Parameter {
 }
 
 class CharacterParameter {
-  Parameter _name;
-  int _value;
-  int _limitMax;
-  int _limitMin;
+  late final Parameter _name;
+  late int _value;
+  late int _limitMax;
+  late int _limitMin;
 
-  CharacterParameter(this._name, this._value, this._limitMin, this._limitMax);
+  CharacterParameter(
+      {required Parameter name,
+      int value = 0,
+      int limitMin = 0,
+      int limitMax = 100}) {
+    _name = name;
+    this.limitMin = limitMin;
+    this.limitMax = limitMax;
+    this.value = value;
+  }
 
   String get name => _name.name;
 
   int get value => _value;
 
-  int get limitMax => _limitMax;
-
-  int get limitMin => _limitMin;
-
-  void setName(Parameter newName) {
-    _name = newName;
+  set value(newValue) {
+    if (value <= _limitMax && value >= _limitMin) {
+      _value = value;
+    } else {
+      throw ParameterValueException();
+    }
   }
 
-  void setLimitMax(int newLimit) {
+  int get limitMax => _limitMax;
+
+  set limitMax(int newLimit) {
     if (_limitMin < newLimit) {
       _limitMax = newLimit;
     } else {
@@ -35,52 +56,59 @@ class CharacterParameter {
     }
   }
 
-  void setLimitMin(int newLimit) {
+  int get limitMin => _limitMin;
+
+  set limitMin(int newLimit) {
     if (_limitMax > newLimit) {
       _limitMin = newLimit;
     } else {
       throw ParameterLimitException();
     }
   }
-
-  setValue(int value) {
-    if (value <= _limitMax && value >= _limitMin) {
-      _value = value;
-    } else {
-      throw ParameterValueException();
-    }
-  }
 }
 
 class Character {
-  String name = 'no name';
-  int _health = 100;
-  int _mana = 100;
-  int _power = 15;
-  int _armor = 10;
+  late String name = 'no name';
+  late CharacterParameter _health;
+  late CharacterParameter _mana;
 
-  Character(this.name);
+  Character(String characterName) {
+    name = characterName;
+    CharacterParameter health =
+        CharacterParameter(name: Parameter.health, value: 100);
+    _health = health;
+    CharacterParameter mana =
+        CharacterParameter(name: Parameter.mana, value: 100);
+    _mana = mana;
+  }
 
-  int get health {
+  CharacterParameter get health {
     return _health;
   }
 
-  int get mana {
+  CharacterParameter get mana {
     return _mana;
   }
 
-  int get power {
-    return _power;
+  updateHealthOn(int health) {
+    int lastHealth = this.health.value + health;
+    if (lastHealth > this.health.limitMax) {
+      this.health.value = this.health.limitMax;
+    } else {
+      this.health.value = lastHealth;
+    }
   }
 
-  int get armor {
-    return _armor;
+  updateManaOn(int mana) {
+    int lastMana = this.mana.value + mana;
+    if (lastMana > this.mana.limitMax) {
+      this.mana.value = this.mana.limitMax;
+    } else if (lastMana < this.mana.limitMin) {
+      this.mana.value = this.mana.limitMin;
+    } else {
+      this.mana.value = lastMana;
+    }
   }
 
-  punch(Character enemy) {
-    int damage = power - enemy.armor;
-  }
-
-  healthUpOn(int health)
 
 }
