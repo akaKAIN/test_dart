@@ -3,7 +3,7 @@ import 'classes.dart';
 import 'robo_fabric.dart';
 
 void main() {
-  Character character = Character('Bob');
+  Character character = Character('bob');
   print(character);
 }
 

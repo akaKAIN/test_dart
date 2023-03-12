@@ -19,9 +19,9 @@ enum Parameter {
 
 class CharacterParameter {
   late final Parameter _name;
-  late int _value;
-  late int _limitMax;
-  late int _limitMin;
+  int _value = 0;
+  int _limitMax = 1;
+  int _limitMin = 0;
 
   CharacterParameter(
       {required Parameter name,
@@ -34,19 +34,26 @@ class CharacterParameter {
     this.value = value;
   }
 
-  String get name => _name.name;
-
-  int get value => _value;
+  String get name     => _name.name;
+  int    get value    => _value;
+  int    get limitMin => _limitMin;
+  int    get limitMax => _limitMax;
 
   set value(newValue) {
-    if (value <= _limitMax && value >= _limitMin) {
-      _value = value;
+    if (newValue <= _limitMax && newValue >= _limitMin) {
+      _value = newValue;
     } else {
       throw ParameterValueException();
     }
   }
 
-  int get limitMax => _limitMax;
+  set limitMin(int newLimit) {
+    if (_limitMax > newLimit) {
+      _limitMin = newLimit;
+    } else {
+      throw ParameterLimitException();
+    }
+  }
 
   set limitMax(int newLimit) {
     if (_limitMin < newLimit) {
@@ -56,14 +63,9 @@ class CharacterParameter {
     }
   }
 
-  int get limitMin => _limitMin;
-
-  set limitMin(int newLimit) {
-    if (_limitMax > newLimit) {
-      _limitMin = newLimit;
-    } else {
-      throw ParameterLimitException();
-    }
+  @override
+  String toString() {
+    return '$name: $limitMin | $value | $limitMax';
   }
 }
 
@@ -110,5 +112,9 @@ class Character {
     }
   }
 
+  @override
+  String toString() {
+    return 'name: $name\n$health\n$mana';
+  }
 
 }

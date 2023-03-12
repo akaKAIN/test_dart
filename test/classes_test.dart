@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 import '../src/classes.dart';
 
 void main() {
-  test('class Parameter created', () {
+  test('class CharacterParameter created', () {
     Map<String, dynamic> startData = {
       'name': Parameter.armor,
       'limitMax': 100,
@@ -20,5 +20,10 @@ void main() {
     expect(param.limitMax, startData['limitMax']);
     expect(param.limitMin, startData['limitMin']);
     expect(param.value, startData['value']);
+  });
+  
+  test('class Character created', () {
+      Character character = Character('Ivan');
+      expect(character.name, "Ivan");
   });
 }
