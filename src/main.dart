@@ -3,8 +3,12 @@ import 'classes.dart';
 import 'robo_fabric.dart';
 
 void main() {
-  Character character = Character('bob');
-  print(character);
+  Warrior bob = Warrior('bob');
+  Character sam = Character('sam');
+  bob.punch(sam);
+  print(bob);
+  sam.punch(bob);
+  print(sam);
 }
 
 void func1({required String name, required int age}) {
