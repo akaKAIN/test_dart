@@ -102,7 +102,7 @@ class Character {
 
   CharacterParameter get power => _power;
 
-  updateHealthOn(int health) {
+  void updateHealthOn(int health) {
     int lastHealth = this.health.value + health;
     if (lastHealth > this.health.limitMax) {
       this.health.value = this.health.limitMax;
@@ -111,7 +111,7 @@ class Character {
     }
   }
 
-  updateManaOn(int mana) {
+  void updateManaOn(int mana) {
     int lastMana = this.mana.value + mana;
     if (lastMana > this.mana.limitMax) {
       this.mana.value = this.mana.limitMax;
@@ -122,7 +122,7 @@ class Character {
     }
   }
 
-  updateArmorOn(int armor) {
+  void updateArmorOn(int armor) {
     int lastArmor = this.armor.value + armor;
     if (lastArmor > this.armor.limitMax) {
       this.armor.value = this.armor.limitMax;
@@ -133,7 +133,7 @@ class Character {
     }
   }
 
-  updatePowerOn(int power) {
+  void updatePowerOn(int power) {
     int lastPower = this.power.value + power;
     if (lastPower > this.power.limitMax) {
       this.power.value = this.power.limitMax;
@@ -168,7 +168,6 @@ class Character {
   }
 }
 
-
 class Warrior extends Character {
   late CharacterParameter _shield;
 
@@ -185,7 +184,7 @@ class Warrior extends Character {
 
   CharacterParameter get shield => _shield;
 
-  updateShield() {
+  void updateShield() {
     shield.value = armor.value;
   }
 
@@ -197,5 +196,34 @@ class Warrior extends Character {
   @override
   String toString() {
     return '${super.toString()}\n$shield';
+  }
+}
+
+class Player {
+  CharacterParameter get health {
+    // TODO: implement health
+    throw UnimplementedError();
+  }
+}
+
+class BattleGround {
+  Character player1;
+  Character player2;
+  int round = 1;
+
+  BattleGround(this.player1, this.player2);
+
+  start() {
+    while(player1.health.value > player1.health.limitMin && player2.health.value > player2.health.limitMin) {
+      if (round.isOdd) {
+        player1.punch(player2);
+      } else {
+        player2.punch(player1);
+      }
+      round++;
+    }
+    print(round);
+    print(player1);
+    print(player2);
   }
 }

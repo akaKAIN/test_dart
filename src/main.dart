@@ -5,10 +5,8 @@ import 'robo_fabric.dart';
 void main() {
   Warrior bob = Warrior('bob');
   Character sam = Character('sam');
-  bob.punch(sam);
-  print(bob);
-  sam.punch(bob);
-  print(sam);
+  BattleGround game = BattleGround(bob,  sam);
+  game.start();
 }
 
 void func1({required String name, required int age}) {
